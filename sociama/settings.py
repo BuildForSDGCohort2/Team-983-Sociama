@@ -14,7 +14,7 @@ SECRET_KEY = 'bb+qhv$)5zb6g%(y60sb1)rr9q$ga5frt9r7q53@th2jte!jx_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*', 'sociama.herokuapp.com']
 
 
 # Application definition
