@@ -1,0 +1,29 @@
+a { 
+    color: rgb(13, 118, 150) !important;
+    text-decoration: none !important;
+}
+
+.profile-image {
+    height: 50px;
+    width: 50px;
+    border-radius: 90%;
+}
+
+.friend {
+    color: red;
+}
+
+.post {
+    background-color:rgb(217, 215, 215); 
+    border: 1px solid rgb(209, 204, 204);
+    margin-bottom: 10px; 
+    padding: 10px;
+}
+
+footer {
+    background-color: rgb(14, 14, 71);
+    color: honeydew;
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 3px;
+}

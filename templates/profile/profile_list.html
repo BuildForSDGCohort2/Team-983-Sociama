@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    <ul style="list-style-type:none;">
+        {% for profile in profiles %}   
+            <li><a href="{{ profile.get_absolute_url }}">{{ profile }}</a></li>    
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}
