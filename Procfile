@@ -1,0 +1,1 @@
+web: gunicorn sociama.wsgi --log-file -
