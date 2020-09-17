@@ -12,7 +12,12 @@
 				</form>
 			</li>
 			<li class="nav-item dropdown">
-				<img class="nav-link profile-image dropdown" data-toggle="dropdown" data-target="profile" src="{{request.user.user_profile.picture.url }}" style="height:50px; width:50px; border-radius:90%;">
+				{% if user.is_authenticated %}
+					<img class="nav-link profile-image dropdown" data-toggle="dropdown" data-target="profile" src="{{request.user.user_profile.picture.url }}" style="height:50px; width:50px; border-radius:90%;">
+				{% else %}
+					<img class="nav-link profile-image dropdown" data-toggle="dropdown" data-target="profile" src="{% static 'profiles/img/profile.jpg' %}">
+				{% endif %}
+				
 				<div class="dropdown-menu" aria-labelledby="profile" style="left: -120px;">
 					{% if user.is_authenticated %}
 						<a href="{% url 'profiles:profile' request.user.user_profile.pk %}" class="dropdown-item" >{{ request.user.user_profile }}</a>
