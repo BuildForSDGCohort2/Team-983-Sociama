@@ -9,6 +9,26 @@ a {
     border-radius: 90%;
 }
 
+.profile-page{
+    /* margin-left: 90px;
+    margin-top: 230px; */
+    margin-left: 90px;
+    margin-top: -90px;
+    height: 150px;
+    width: 150px;
+    border-radius: 100%;
+}
+
+.profile-page-title {
+    margin-left: 290px;
+    margin-top: -40px;
+
+}
+
+.page-header{
+    height: 330px;
+    background-color: gray;
+}
 .friend {
     color: red;
 }
@@ -26,4 +46,21 @@ footer {
     padding: 5px;
     margin-top: 10px;
     margin-bottom: 3px;
+}
+
+.post_input {
+    width:350px; 
+    height: 100px; 
+    margin:0 10px; 
+    padding:0px 5px 5px 18px;
+    resize: none;
+}
+
+.post-button {
+    margin-left: 340px;
+}
+
+.follow{
+    padding-top: 8px;
+    margin: 0px 10px;
 }

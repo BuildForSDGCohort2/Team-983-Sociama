@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from .forms import UpdateUserForm
+from post.forms import PostForm, CommentForm
 from .models import Profile, Follow, FriendReqest
 from post.models import Post
 
@@ -15,6 +16,9 @@ class ProfileView(generic.DetailView):
         pk = get_object_or_404(Profile, pk=pk_)
         context['posts'] = Post.objects.filter(profile=pk)
         context['follow'] = Follow.objects.filter(follower=pk)
+        context['form'] = PostForm()
+        context['comments'] = CommentForm()
+
         return context
 
 def profile_view(request, pk):

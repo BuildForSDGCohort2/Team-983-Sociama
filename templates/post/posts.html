@@ -15,7 +15,8 @@
                     <div class="col-md-11">
                         <div>
                             <b><a href="{% url 'profiles:profile' post.profile.pk %}">{{ post.profile }}</a></b>
-                            <div style="margin-left: 400px;">{{ post.created_at }}</div>
+                            <div style="margin-left: 10px;">posted an update {{ post.created_at|date:"D d M Y" }}</div>
+                            {{ post.created_at|timesince:post.created_at }}
                         </div>
                         <br>
                         <a href="{% url 'post:post-detail' id=post.id %}" style="padding: 10px; height:250px; width:250px;">
