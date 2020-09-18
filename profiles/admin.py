@@ -5,8 +5,9 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'user')
     # list_filter = ('first_name',)
     fieldsets = (
-        (None, {'fields': ('user', 'first_name', 'last_name')}),
-        ('Others', {'fields': ('friends', 'about', 'picture', 'cover')}),
+        (None, {'fields': ('user', 'first_name', 'last_name', 'gender', 'age')}),
+        ('Basic Info', {'fields': ('Hobbies', 'work', 'education', 'relationship', 'phone')}),
+        ('Others', {'fields': ('friends', 'about', 'picture', 'cover', 'country')}),
     )
     add_fieldsets = (
         (None, {

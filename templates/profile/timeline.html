@@ -1,0 +1,118 @@
+            <div>
+                <div class="row">
+                    <div class="col-md-3" style="background-color: rgb(245, 239, 239); margin:2px;">
+                        <h4 class="friend" style="text-align: center;">Friends</h4>
+                        {{ prof.get_friends_no }}
+                        {% for friends in prof.get_friends %}
+                            <ul style="list-style-type:none; padding-inline-start:0px;">
+                                <li>{{ friends }}</li>
+                                
+                            </ul>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-5" style="background-color: white; margin:2px;">
+                        <div class="row" style="background-color: rgb(241, 233, 221); padding:9px;">
+                            <div class="col-md-1">
+                                <img src="{{ prof.picture.url }}" style="height:30px; width:30px; border-radius:90%;">
+                            </div>
+                            <div class="col-md-9">
+                                 <!-- <input type="text" style="width:300px; height: 100px; margin:0 10px; padding:0px 5px 5px 18px;" placeholder="What's on your mind?"> -->
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <textarea class='post_input' name="" id="" placeholder="What's on your mind?"></textarea>
+                                    <br>
+                                    <input class="post-button" type="submit" value="Post">
+                                </form>
+                                <hr>
+                            </div>
+
+                            <div>
+                                {% for post in posts %}
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <a href="{% url 'profiles:profile' post.profile.pk %}">
+                                                <img class="profile-image" src="{{ post.profile.picture.url }}" style="height:40px; width:40px; border-radius: 90%;">
+                                            </a>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <b><a href="{% url 'profiles:profile' post.profile.pk %}">{{ post.profile }}</a></b>
+                                            <br>
+                                            <div style="margin-left: 10px;">posted on {{ post.created_at|date:"D d M Y" }}</div>
+
+                                            <a href="{% url 'post:post-detail' id=post.id %}">
+                                                <div>
+                                                    {{ post.caption }}
+                                                </div>
+                                                <br>
+                                                {% if post.images %}
+                                                    <div>
+                                                        <img src="{{ post.images.url }}" style="height:250px; width:250px;">
+                                                    </div>
+                                                {% endif %}
+                                            {{ post.posted }}
+                                            <div>
+                                                <form action="" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="post_id" value="post.id">
+
+                                                </form>
+                                                <a class="mr-1" href="#">
+                                                    <i class="fa fa-thumbs-up"></i>
+                                                </a>
+                                                <a class="ml-1" href="#">
+                                                    <i class="fa fa-thumbs-down"></i>
+                                                </a>
+                                            </div>
+                                            </a>
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <form action="" class="form-inline">
+                                        <div class="row form-group">
+                                            <img class="profile-image" src="{{ post.profile.picture.url }}" style="height:50px; width:50px; border-radius: 90%; margin:0 10px;">
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                                <input type="text" style="width:300px; height: 50px; margin:0 10px; padding:5px 18px;" placeholder="Comment on post{{ comments.comment }}">
+                                            </form>
+                                            
+                                            <button type="submit" class="btn btn-primary">Reply</button>
+                                        </div>
+                                    </form>
+                                    <hr>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="background-color: rgb(245, 239, 239); margin:2px;">
+                        <h4 style="text-align: center;">Message</h4>
+                            <ul>
+                               <u>Followering</u> 
+                               <br>
+                               No of followers: {{ prof.get_follower_no }}
+                                {% for follower in prof.get_follower %}
+                                    <ul style="list-style-type:none; padding-inline-start:0px;">
+                                        <li>
+                                            <a href="#">
+                                                {{ follower.following }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                {% endfor %}
+                            </ul>
+                            <ul>
+                                <u>Followers</u>
+                                <br>
+                                No of followerings: {{ prof.get_followering_no }}
+                                {% for following in prof.get_following %}
+                                    <ul style="list-style-type:none; padding-inline-start:0px;">
+                                        <li>
+                                            <a href="{% url 'profiles:profile' prof.pk %}">
+                                                {{ following.follower }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                {% endfor %}
+                            </ul>
+                    </div>
+                </div>
+            </div>
