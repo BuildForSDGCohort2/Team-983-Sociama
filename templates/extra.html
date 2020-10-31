@@ -9,3 +9,35 @@
 		  <a class="dropdown-item" href="#">Something else here</a>
 		</div>
 	  </li>
+
+<form action="" class="form-inline">
+<div class="row form-group">
+<img class="profile-image" src="{{ post.profile.picture.url }}" style="height:50px; width:50px; border-radius: 90%; margin:0 10px;">
+<form action="" method="post">
+	{% csrf_token %}
+	<input type="text" style="width:300px; height: 50px; margin:0 10px; padding:5px 18px;" placeholder="Comment on post{{ comments.comment }}">
+</form>
+
+<button type="submit" class="btn btn-primary">Reply</button>
+</div>
+</form>
+<hr>
+
+{% if request.user.user_profile == prof %}
+
+    {% for r_requst in received_friend_request %}
+        <a href="{{ r.request.from_user.profile.get_absolute_url }}">{{ r.request.from_user.profile }}</a>
+        <a class="btn btn-primary" href="{% url 'profiles:accept_friend_request' pk ">Accept</a>    
+    {% endfor %}
+
+{% else %}
+
+    {% if  button_status == 'not friend' %}
+        <a class="btn btn-primary" href="{% url 'profiles:send_friend_request' pk ">Send</a>    
+    {% elif button_status == 'friend_request_sent' %}
+        <a class="btn btn-primary" href="{% url 'profiles:cancel_friend_request' pk ">Cancel</a>    
+    {% endif %}
+
+
+{% endif %}
+ 

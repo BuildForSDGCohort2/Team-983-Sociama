@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<div style="background-color: rgb(20, 39, 68); height:561px;">
+    <div>
+        <form action="" method="post" style="text-align: center;  padding-top:110px;">
+            {% csrf_token %}
+            <img src="{% static 'profiles/img/logo.png' %}" style="height: 100px; margin-bottom:40px;text-align: center;">
+            
+            <div data-validate="Enter email" style="margin-bottom: 20px; text-align: center;">
+                <input type="email" name="email" placeholder="Email" style="height: 40px; width:440px; padding:0px 15px;">
+            </div>
+                    
+            <div data-validate = "Enter password" style="margin-bottom: 20px; text-align: center;">
+                <input type="password" name="password" id="password" placeholder="Password" style="height: 40px; width:440px; padding:0px 15px;">
+            </div>
+
+            <input class="btn " type="submit" value="Log in" style="height: 50px; width:440px; background-color: rgb(3, 9, 17); color:azure">
+
+            <p style="text-align:center; margin-top:15px; font-size:19px; color:rgb(203, 236, 172)">
+                Don't have an account: <span>
+                    <a href="{% url 'users:register' %}" style="color: rgb(221, 13, 75) !important;">Register</a></span>
+            </p>
+            <p style="text-align:center; margin-top:15px; font-size:19px; color:rgb(203, 236, 172)">
+               <span>
+                    <a href="{% url 'users:password_reset' %}" style="color: rgb(221, 13, 75) !important;">Forgot Password?</a></span>
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

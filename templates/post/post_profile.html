@@ -1,0 +1,18 @@
+{% if request.user.user_profile == prof %}           
+    <div class="col-md-1">
+        <img src="{{ prof.picture.url }}" style="height:30px; width:30px; border-radius:90%;">
+    </div>
+    <div class="col-md-9">
+            <form action="" method="post">
+                {% csrf_token %}
+                <textarea name="caption" id="id_caption" cols="30" rows="3" placeholder="Username"></textarea>
+                <br style="margin: 5px 0px;">
+                <input type="file" name="images" id="id_images">
+                <br style="margin: 5px 5px;">
+                <input type="submit" value="Post">
+            </form>
+        <hr>
+    </div>
+{% endif %}
+
+{% comment %} {{ post.as_p }} {% endcomment %}

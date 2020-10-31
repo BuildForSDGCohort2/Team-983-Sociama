@@ -1,30 +1,43 @@
 {% load static %}
-<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-1">
-	<a class="navbar-brand" href="{% url 'post:posts' %}" style="color:green;">Sociama </a>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark" style="padding: 0px 100px;">
+	<a class="navbar-brand" href="{% url 'post:posts' %}">
+		<img src="{% static 'profiles/img/nav.png' %}" alt="" style="height:30px;">
+		Home </a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
  	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<!-- <li class="nav-item">
+				<a href="#" class="dropdown-item">{{ request.user.user_profile }}</a>
+			</li> -->
+			<li class="nav-item pr-2 pl-2 pt-1">
+				<a href="#"><i class="fa fa-bell mr-1" style="font-size: 19px;"></i> Notifications</a>
+			</li>
+			<li class="nav-item pr-2 pl-2 pt-1">
+				<a href="#"><i class="fas fa-envelope" style="font-size: 19px;"></i> Messages <span class="badge">19</span></a>
+			</li>
+		</ul>
 		<ul class="navbar-nav ml-auto">
 			<li class="nav-item">
 				<form class="form-inline my-2">
-					<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+					<input class="form-control mr-sm-2" type="search" placeholder="Search Sociama ..." aria-label="Search">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 				</form>
+				<!-- <i class="fa fa-search"></i> -->
 			</li>
-			<li><a href="{% url 'profiles:profile' request.user.user_profile.pk %}" class="dropdown-item" >{{ request.user.user_profile }}</a></li>
 		
 			<li class="nav-item dropdown">
 				{% if user.is_authenticated %}
-					<img class="nav-link profile-image dropdown" data-toggle="dropdown" data-target="profile" src="{{request.user.user_profile.picture.url }}" style="height:50px; width:50px; border-radius:90%;">
+					<img class="nav-link profile-image dropdown" data-toggle="dropdown" data-target="profile" src="{{request.user.user_profile.picture.url }}" aria-expanded="true">
 				{% else %}
-					<img class="nav-link profile-image dropdown" data-toggle="dropdown" data-target="profile" src="{% static 'profiles/img/profile.jpg' %}">
+					<img class="nav-link profile-image dropdown" data-toggle="dropdown" data-target="profile" src="{% static 'profiles/img/profile.jpg' %}" aria-expanded="true">
 				{% endif %}
 				
-				<div class="dropdown-menu" aria-labelledby="profile" style="left: -120px;">
+				<div class="dropdown-menu" aria-labelledby="profile" style="left: -60px;">
 					{% if user.is_authenticated %}
 						<a href="{% url 'profiles:profile' request.user.user_profile.pk %}" class="dropdown-item" >{{ request.user.user_profile }}</a>
-                        <a href="{% url 'profiles:update_profile' request.user.pk %}" class="dropdown-item">Edit</a>
+                        <a href="{% url 'profiles:update_profile' request.user.user_profile.pk %}" class="dropdown-item">Edit</a>
 						<div class="dropdown-divider"></div>
 						<a href="{% url 'users:logout' %}" class="dropdown-item">Logout</a>
 					{% else %}

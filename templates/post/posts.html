@@ -2,57 +2,81 @@
 {% load static %}
 {% block body %}
 
-{% for post in posts %}
-    <div class="container" style="margin-left: 130px; margin-right:50px;">
-        <div class="row">
-            <div class="post col-md-8">
-                <div class="row">
-                    <div class="col-md-1">
-                        <a href="{% url 'profiles:profile' post.profile.pk %}">
-                            <img class="profile-image" src="{{ post.profile.picture.url }}">
-                        </a>
-                    </div>
-                    <div class="col-md-11">
-                        <div>
-                            <b><a href="{% url 'profiles:profile' post.profile.pk %}">{{ post.profile }}</a></b>
-                            <div style="margin-left: 10px;">posted an update {{ post.created_at|date:"D d M Y" }}</div>
-                            {{ post.created_at|timesince:post.created_at }}
+{% if request.user.is_authenticated %}
+    <div class="container-fluid" style="min-height: 458px; margin-top:4px;">
+        <div class="row" style="margin-left: 1px;">
+            <div class="col-md-7">
+                {% for post in posts %}
+                    <div class="post row">
+                        <div class="col-md-1">
+                            <a href="{% url 'profiles:profile' post.profile.pk %}">
+                                <img class="profile-image" src="{{ post.profile.picture.url }}">
+                            </a>
                         </div>
-                        <br>
-                        <a href="{% url 'post:post-detail' id=post.id %}" style="padding: 10px; height:250px; width:250px;">
+                        <div class="col-md-9">
                             <div>
-                                <div>
-                                    {{ post.caption }}
-                                </div>
-                                <br>
-                                {% if post.images %}
-                                <div>
-                                    <img src="{{ post.images.url }}" style="height:250px; width:250px;">
-                                </div>
-                                {% endif %}
+                                <b><a href="{% url 'profiles:profile' post.profile.pk %}">{{ post.profile }}</a></b>
+                                <div style="margin-left: 10px;">posted an update {{ post.created_at|date:"d M y H:i" }}</div>
                             </div>
-                        </a>
-                        <div>
-                            <a class="mr-1" href="#">
-                                <i class="fa fa-thumbs-up"></i> 
+                            <a href="{% url 'post:post-detail' id=post.id %}" style="padding: 10px; height:250px; width:250px;">
+                                <div>
+                                    <div>
+                                        <span class="link">{{ post.caption }}</span>
+                                    </div>
+                                    <br>
+                                    {% if post.images %}
+                                    <div>
+                                        <img src="{{ post.images.url }}" style="height:250px; width:250px;">
+                                    </div>
+                                    {% endif %}
+                                </div>
                             </a>
-                            <a class="ml-1" href="#">
-                                <i class="fa fa-thumbs-down"></i>
-                            </a>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <form action="{% url 'post:like_post' %}" method="post">
+                                        {% csrf_token %}
+                                        {% if post.liked == False %}
+                                            <input type="hidden" name="post_id" value="{{ post.id }}">
+                                            <button class="btn btn-danger" type="submit" name="post_id" value="{{ post.id }}" style="color: rgb(0, 26, 255);">
+                                                <i class="far fa-heart"></i>
+                                                <span style="color: rgb(0, 204, 255);">{{post.likes_no}}</span>
+                                            </button>
+                                        {% else %}
+                                            <button class="btn" type="submit" name="post_id" value="{{ post.id }}" style="background-color: rgb(67, 145, 182);">
+                                                <i class="fa fa-heart" style="color: rgb(221, 20, 20);"></i> 
+                                                <span style="color: rgb(255, 0, 0);">{{post.likes_no}}</span>
+                                            </button>
+                                        {% endif %}
+                                        {{ post.liked }} 
+                                    </form>
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="{% url 'post:post-detail' id=post.id %}">
+                                        <button class="btn" style="background-color: rgb(55, 73, 5);">
+                                            <i class="fa fa-comment" style="color: rgb(7, 44, 255);"></i>
+                                            <span style="color: rgb(7, 44, 255);">{{post.comment_no }}</span>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <br>
                         </div>
-                
-                        <br>
                     </div>
-                </div>
+                {% endfor %}
             </div>
-            <div class="col-md-4" style="background-color: darkslategray; left:15px;">
-
+            <div class="col-md-4" style="background-color: olive; right:-14px ">
+                    {{ following }}
+                    <hr>
+                    {{ follow_post }}
+                    <hr>
+                    {{ followings_post }}
             </div>
         </div>
-
     </div>
-
-
-{% endfor %}
+{% else %}
+    {% include 'user/welcome.html' %}
+{% endif %}
 
 {% endblock body %}

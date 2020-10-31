@@ -1,13 +1,13 @@
 from django.contrib import admin
-from .models import Profile, Follow, FriendReqest
+from .models import Profile, Follow
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'user')
+    list_display = ('username', 'first_name', 'last_name', 'user')
     # list_filter = ('first_name',)
     fieldsets = (
-        (None, {'fields': ('user', 'first_name', 'last_name', 'gender', 'age')}),
+        (None, {'fields': ('user', 'username', 'first_name', 'last_name', 'gender', 'age')}),
         ('Basic Info', {'fields': ('Hobbies', 'work', 'education', 'relationship', 'phone')}),
-        ('Others', {'fields': ('friends', 'about', 'picture', 'cover', 'country')}),
+        ('Others', {'fields': ('followers', 'followings', 'about', 'picture', 'cover', 'country')}),
     )
     add_fieldsets = (
         (None, {
@@ -19,7 +19,13 @@ class ProfileAdmin(admin.ModelAdmin):
     ordering = ('first_name',)
     filter_horizontal = ()
 
-admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Follow)
-admin.site.register(FriendReqest)
+class FollowAdmin(admin.ModelAdmin):
+    list_display = ('follower', 'following')
+    list_filter = ('follower',)
 
+admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Follow, FollowAdmin)
+
+admin.site.site_header = 'Sociama Administration'
+admin.site.site_title = 'Welcome To Sociama Network'
+admin.site.index_title = 'Welcome To Sociama Network'

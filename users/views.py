@@ -4,7 +4,6 @@ from django.views import generic
 from django.contrib import messages
 from .forms import CreateUserForm
 from .models import User
-# from post.models import Post
 
 def registerview(request):
     if request.user.is_authenticated:
@@ -17,9 +16,9 @@ def registerview(request):
                 form.save()
                 user = form.cleaned_data.get('username')
                 messages.success(request, 'User Account has been Created for ' + user)
-                return redirect('post:posts')
+                return redirect('users:login')
         context = {'form': form}
-        return render(request, 'profile/user.html', context)
+        return render(request, 'user/register.html', context)
 
 def loginview(request):
     if request.user.is_authenticated:
@@ -37,7 +36,7 @@ def loginview(request):
                 messages.info(request, 'email or Password incorrect')
 
         context = {}
-        return render(request, 'profile/login.html', context)
+        return render(request, 'user/login.html', context)
 
 def logoutview(request):
     logout(request)
