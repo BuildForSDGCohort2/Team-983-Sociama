@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+<div style="background-color: rgb(20, 39, 68); height:561px;">
+    <form method="POST" id="signup-form" style="text-align: center; padding-top:110px;">
+        {% if form.errors %}
+            <h5>
+                <p style="font-style: oblique; font-weight: bold; color: rgb(236, 16, 16);">Your password didn't match. Please try again.</p>
+                {{ messages.error }}
+            </h5>
+        {% endif %}
+        {% csrf_token %}
+        <h2 class="form-title" style="text-align:center;color:azure; ">Create account</h2>
+        <div class="form-group">
+            <input type="email" id="email" placeholder="Email" style="height: 40px; width:440px; padding:0px 15px;"/>
+        </div>
+        <div class="form-group">
+            <input type="text" id="username" placeholder="Username" style="height: 40px; width:440px; padding:0px 15px;"/>
+        </div>                    
+        <div class="form-group">
+            <input type="password" name="password1" id="password1" placeholder="{{ form.password1.label }}" style="height: 40px; width:440px; padding:0px 15px;"/>
+        </div>
+        <div class="form-group">
+            <input type="password" name="password2" id="password2" placeholder="Repeat password" style="height: 40px; width:440px; padding:0px 15px;"/>
+        </div>
+        <div class="form-group">
+            <input type="submit" name="submit" id="submit" class="btn" value="Register" style="height: 50px; width:440px; padding:0px 15px; background-color: rgb(3, 9, 17); color:azure"/>
+        </div>
+
+        <p style="text-align:center; margin-top:15px; font-size:19px; color: rgb(203, 236, 172)">
+            Already have an account: 
+            <span>
+                <a href="{% url 'users:login' %}" style="color: rgb(221, 13, 75) !important;">Login</a>
+            </span>
+        </p>
+    </form>
+
+</div>
+
+{% endblock %}
+

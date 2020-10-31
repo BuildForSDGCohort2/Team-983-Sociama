@@ -121,5 +121,10 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STREAM_API_KEY = 'az6vd4s7ctge'
-STREAM_API_SECRET = '6rtvx8bbb6c59z6exjx9emtbu9h44wq4rxp7kcdty9fspdw2wn6geqgmndbyzktt'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'davidduyile6@gmail.com'
+EMAIL_HOST_PASSWORD = 'darlingtin'

@@ -1,20 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block body %}
-<div class="container">
-    <div class="row">
+<div class="container" style="min-height: 496px;">
+    <div class="row" style="padding-top: 20px;">
         <div class="col-md-8">
-            <div class="row">
-                <div class="col-md-1">
-                    <a href="{% url 'profiles:profile' post.profile.pk %}">
-                        <img class="profile-image" src="{{ post.profile.picture.url }}">
-                    </a>
-                </div>
-                <div class="col-md-11">
-                    <div>
-                        <b><a href="{% url 'profiles:profile' post.profile.pk %}">{{ post.profile }}</a></b>
-                        <div style="margin-left: 400px;">{{ post.created_at }}</div>
+            <div style="background-color: rgb(240, 236, 236); padding:10px;">
+                <div class="row">
+                    <div class="col-md-1">
+                        <a href="{% url 'profiles:profile' post.profile.pk %}">
+                            <img class="profile-image" src="{{ post.profile.picture.url }}">
+                        </a>
                     </div>
+                    <div class="col-md-11">
+                        <b><a href="{% url 'profiles:profile' post.profile.pk %}">{{ post.profile }}</a></b>
+                        <div>posted on {{ post.created_at|date:"d M Y H:i" }}</div>
+                    </div>
+
+                </div>
+                <div class="container-fluid">
                     <br>
                     <div>
                         <div>
@@ -27,35 +30,63 @@
                             </div>
                         {% endif %}
                     </div>
-                    <div>
-                        <a class="mr-1" href="#">
-                            <i class="fa fa-thumbs-up"></i>
-                        </a>
-                        <a class="ml-1" href="#">
-                            <i class="fa fa-thumbs-down"></i>
-                        </a>
-                    </div>
+                    <hr>
                     <div>
                         <form action="{% url 'post:like_post' %}" method="post">
                             {% csrf_token %}
                             {% if is_liked %}
                                 <input type="hidden" name="post_id" value="{{ post.id }}">
                                 <button class="btn btn-danger" type="submit" name="post_id" value="{{ post.id }}">
-                                    Dislike
+                                    <i class="fa fa-heart"></i>
+                                    <span style="color: black">{{likes_no}}</span>
+
                                 </button>
                             {% else %}
                                 <button class="btn btn-primary" type="submit" name="post_id" value="{{ post.id }}">
-                                    Like
+                                    <i class="far fa-heart"></i>
+                                    <span style="color: black;">{{likes_no}}</span>
+
                                 </button>
                             {% endif %}
+                            {% comment %} {{ likes_no }} Like{{ likes_no|pluralize }} {% endcomment %}
                         </form>
-                        {{ likes_no }} Like{{ likes_no|pluralize }}
+                        
                     </div>
                     <br>
-                    {% for comment in comments %}
-
-                        <li>{{ comment.profile }} - {{ comment.comment }}</li>
-                    {% endfor %}
+                    <hr style="border-top: 2px solid green;">
+                    <!-- ----------------------COMMENT--------------------------------------------- -->
+                    <b><p style="text-align: center; font-size:25px">Comments</p></b>
+                    {% if comments %}
+                        {% for comment in comments %}
+                            <div class="row" style="background-color: rgb(226, 236, 238); padding-top:9px;">
+                                <div class="col-md-1">
+                                    <a href="{% url 'profiles:profile' comment.profile.pk %}">
+                                        <img class="profile-image" src="{{ comment.profile.picture.url }}">
+                                    </a>
+                                </div>
+                                <div class="col-md-11">
+                                    <b><a href="{% url 'profiles:profile' comment.profile.pk %}">{{ comment.profile }}</a></b>
+                                    <div>{{ comment.created_at|date:"d M Y H:i" }}</div>
+                                </div>
+                                <div class="container">
+                                    <br>
+                                    <div>
+                                        {{ comment.comment }}
+                                    </div>
+                                    <br>
+                                    {% if post.images %}
+                                    <div>
+                                        <img src="{{ post.images.url }}" style="height:250px; width:250px;">
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div> 
+                            <br>
+                        {% endfor %}
+                        
+                    {% else %}
+                           <p style="text-align: center;">No comment. Say something nice.</p> 
+                    {% endif %}
                 </div>
             </div>
         </div>

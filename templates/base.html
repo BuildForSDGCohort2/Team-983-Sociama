@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,39 +7,21 @@
     <title>Sociama</title>
     {% load static %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-	<link rel="shortcut icon" href="{% static 'profiles/img/favicon.ico' %}">
-    
-    <link type="text/css" rel="stylesheet" href="{% static 'profiles/css/profile.css' %}">
+	
+    <link rel="shortcut icon" href="{% static 'profiles/img/favicon.ico' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'profiles/css/sociama.css' %}">
     <link type="text/css" rel="stylesheet" href="{% static 'profiles/css/bootstrap.min.css' %}">
     <link type="text/css" rel="stylesheet" href="{% static 'profiles/css/all.css' %}" >
 
 </head>
-<body class="container-fluid" style="background-color:rgb(233, 230, 230)">
+<body>
     {% include 'nav.html' %}
 
     {% block body %}
 
     {% endblock %}
 
-    {% comment %} <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-md-push-6">
-                    <ul class="footer-item">
-                        <li class="footer-item"><a href="">Home</a></li>
-                        <li class="footer-item"><a href="">Contacts</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-6 col-md-pull-6">
-                    <div class="footer-copyright">
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer> {% endcomment %}
-
-    <footer class="footer" style="min-height:80px;">
+    <footer class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-md-push-6">
@@ -57,16 +38,19 @@
             </div>        
         </div>
     </footer>
-    
-<script href="{% static 'profiles/js/bootstrap.min.js' %}"></script>
+
+    <a id="back2Top" title="Back to top" href="#">&#10148;</a>
+
+</body>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-<script href="{% static 'profiles/js/all.js' %}"></script>
-<script href="{% static 'profiles/js/sociama.js' %}"></script>
 
-
-
-
-</body>
+<script src="{% static 'profiles/jquery-ui/external/jquery/jquery.js' %}"></script>
+<script src="{% static 'profiles/jquery-ui/jquery-ui.js' %}"></script>
+<script src="{% static 'profiles/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'profiles/js/bootstrap.js' %}"></script>
+<script src="{% static 'profiles/js/all.js' %}"></script>
+<script src="{% static 'profiles/js/sociama.js' %}"></script>
 </html>

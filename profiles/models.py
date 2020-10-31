@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
-from django.shortcuts import reverse
+from django.shortcuts import reverse, get_object_or_404
+
 RELATIONSHIP = (
     ('Single', 'Single'), 
     ('In a relatinship', 'In a relatinship'),
@@ -14,16 +15,18 @@ RELATIONSHIP = (
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
-    first_name = models.CharField(max_length=20, primary_key=True, blank=True)    
+    username = models.CharField(max_length=20, primary_key=True, blank=True)
+    first_name = models.CharField(max_length=20, blank=True)    
     last_name = models.CharField(max_length=20, blank=True)
     age = models.DateField(blank=True, null=True)
     Hobbies = models.CharField(max_length=200, blank=True)
     work = models.CharField(max_length=200, blank=True)
     education = models.CharField(blank=True, max_length=40)
-    GENDER = (('Male', 'Male'), ('Female', 'Female'),)
+    GENDER = (('Male', 'Male'), ('Female', 'Female'), ('Others', 'Others'),)
     gender = models.CharField(choices=GENDER, max_length=7, blank=True)
     relationship = models.CharField(choices=RELATIONSHIP, max_length=23, blank=True)
-    friends = models.ManyToManyField("Profile", blank=True)
+    followers= models.ManyToManyField("Profile", blank=True, related_name='followerss')
+    followings = models.ManyToManyField("Profile", blank=True, related_name='followingss')
     about = models.TextField(default='No Bio', blank=True)
     phone = models.IntegerField(blank=True, null=True)
     cover = models.ImageField(upload_to='user/cover', default='user/happy.jpg', blank=True)
@@ -37,32 +40,20 @@ class Profile(models.Model):
         return reverse('profiles:profile', kwargs={"pk": self.pk})
 
     def get_follower(self):
-        profile = self.first_name
-        return Follow.objects.filter(follower=profile)
+        return self.followers.all()
 
     def get_follower_no(self):
-        profile = self.first_name
-        follow = Follow.objects.filter(follower=profile)
-        return follow.count()
-
-    def get_followering_no(self):
-        profile = self.first_name
-        following = Follow.objects.filter(following=profile)
-        return following.count()
+        return self.followers.count()
 
     def get_following(self):
-        profile = self.first_name
-        return Follow.objects.filter(following=profile)
+        return self.followings.all()
+
+    def get_followering_no(self):
+        return self.followings.count()
     
-    def get_friends(self):
-        return self.friends.all()
-
-    def get_friends_no(self):
-        return self.friends.all().count()
-
 class Follow(models.Model):
-    follower = models.ForeignKey(Profile, related_name='followers', on_delete=models.CASCADE)
-    following = models.ForeignKey(Profile, related_name='followings', on_delete=models.CASCADE)
+    follower = models.ForeignKey(Profile, related_name='follower', on_delete=models.CASCADE)
+    following = models.ForeignKey(Profile, related_name='following', on_delete=models.CASCADE)
     created_at = models.DateField(auto_now_add=True)
 
     class Meta:
@@ -71,10 +62,9 @@ class Follow(models.Model):
     def __str__(self):
         return f"{self.follower} followed {self.following} on {self.created_at}"
 
-class FriendReqest(models.Model):
-    from_user = models.ForeignKey(Profile, related_name='from_user', on_delete=models.CASCADE)
-    to_user = models.ForeignKey(Profile, related_name='to_user', on_delete=models.CASCADE)
-    created_at = models.DateField(auto_now_add=True)
+    def save(self, **kwargs):
+        if self.follower == self.following:
+            raise ValueError("Cannot follow yourself.")
+        super(Follow, self).save(**kwargs)
 
-    def __str__(self):
-        return f"{self.from_user} sent {self.to_user} on {self.created_at}"
+
