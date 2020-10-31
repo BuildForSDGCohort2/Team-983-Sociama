@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, reverse, redirect, HttpResponseRedirect
 from django.views import generic
 from .models import Post, Comment
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from profiles.models import Profile
 
