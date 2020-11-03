@@ -17,19 +17,7 @@ class ProfileView(generic.DetailView):
         pk = get_object_or_404(Profile, pk=pk_)
         context['posts'] = Post.objects.filter(profile=pk)
         context['follow'] = Follow.objects.filter(follower=pk)
-
-        post = PostForm(self.request.POST or None, self.request.FILES or None)
-        post_profile = Profile.objects.get(pk=self.request.user.user_profile.pk)
-        if post.is_valid():
-            instance = post.save(commit=False)
-            instance.profile = post_profile
-            instance.save()
-            post = PostForm()
-        context['post'] = post
-
-        context['comments'] = CommentForm()
-        context['follow'] = FollowForm() 
-
+                
         view_profile = self.get_object()
         my_profile = Profile.objects.get(pk=self.request.user.user_profile.pk)
         if view_profile in my_profile.followings.all():
@@ -39,17 +27,24 @@ class ProfileView(generic.DetailView):
         context['followed'] = follow
         return context
 
-def post_new(request):
-    if request.method == "POST":
-        form = PostForm(request.POST)
+def create_post(request):
+    form = PostForm()
+
+    if request.method == 'POST':
+        print('Printing POST:', request.POST)
+        form = PostForm(request.POST, request.FILES)   
+        profile = Profile.objects.get(pk=request.user.user_profile.pk)
+
         if form.is_valid():
-            post = form.save(commit=False)
-            post.profile = request.user.user_profile
-            post.save()
-            return redirect('profile:profile', pk=post.profile.pk)
-    else:
-        form = PostForm()
-    return render(request, 'post/post_modal.html', {'form': form})
+            instance = form.save(commit=False)
+            instance.profile = profile
+            instance.save()
+            form = PostForm()
+
+            return redirect(profile.get_absolute_url())
+
+    context = {'form': form}
+    return render(request, 'post/post_modal.html', context)
 
 class ProfileList(generic.ListView):
     model = Profile
@@ -78,10 +73,7 @@ def updateprofile(request, pk):
 #     return redirect(request.META.get('HTTP_REFERER')) # return to same page
 
 def follow(request, pk):
-    # profile = get_object_or_404(Profile, pk=pk)
-    # followr, created = Follow.objects.get_or_create(follower=request.user.user_profile, following=profile)
-    # return redirect(request.META.get('HTTP_REFERER')) # return to same page   
-
+    
     if request.method == "POST":
         # logged in profile
         profile_ = request.user.user_profile.pk

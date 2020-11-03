@@ -6,10 +6,11 @@
     <div>
         <img src="{{ prof.cover.url }}" style="width:100%; height:330px">
         {% if prof == request.user.user_profile %}
-            <button type="button" class="btn btn-primary profile_follow" data-toggle="modal" data-target="#staticBackdrop">
+            <!-- <button type="button" class="btn btn-primary profile_follow" data-toggle="modal" data-target="#staticBackdrop">
                 Post
-            </button>
-            {% include 'post/post_modal.html' %}
+            </button>-->
+            {% include 'post/post_modal.html' %} 
+            <a class="btn btn-primary profile_follow" data-toggle="modal" href="#staticBackdrop">Post</a>
         {% else %}
             {% if followed %}
                 <form action="{% url 'profiles:follow' prof.pk %}" method="POST">
@@ -111,3 +112,9 @@
     </div>
 </div>
 {% endblock body %}
+
+<script>
+    $('#staticBackdrop').on('shown.bs.modal', function () {
+        $('#staticBackdrop1').trigger('focus')
+    })    
+</script>
