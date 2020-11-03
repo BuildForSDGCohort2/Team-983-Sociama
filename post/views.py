@@ -3,6 +3,7 @@ from django.views import generic
 from .models import Post, Comment
 from django.contrib import messages
 from itertools import chain
+from .forms import CommentForm
 from django.contrib.auth import authenticate, login, logout
 from profiles.models import Profile
 
@@ -51,11 +52,25 @@ def post_detail(request, id):
     is_liked = False
     if request.user.user_profile in post.post_likes.all():
         is_liked = True
+
+    c_form = CommentForm()
+    if request.method == 'POST':
+        c_form = CommentForm(request.POST)   
+        profile = Profile.objects.get(pk=request.user.user_profile.pk)
+
+        if c_form.is_valid():
+            instance = c_form.save(commit=False)
+            instance.profile = profile
+            instance.post = Post.objects.get(id=request.POST.get('post_id'))
+            instance.save()
+            c_form = CommentForm()
+    
     context = {
         'post': post,
         'comments': comments,
         'is_liked': is_liked,
         'likes_no': post.likes_no(),
+        'c_form': c_form,
     }
     return render(request, 'post/post_detail.html', context)
 
