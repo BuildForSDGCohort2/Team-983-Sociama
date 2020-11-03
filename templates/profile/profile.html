@@ -6,17 +6,26 @@
     <div>
         <img src="{{ prof.cover.url }}" style="width:100%; height:330px">
         {% if prof == request.user.user_profile %}
-            <span class="btn profile_follow">Post</span> 
+            <button type="button" class="btn btn-primary profile_follow" data-toggle="modal" data-target="#staticBackdrop">
+                Post
+            </button>
+            {% include 'post/post_modal.html' %}
         {% else %}
-            {% if prof in request.user.user_profile.get_follower %}
-                <a class="btn btn-danger" href="">Unfollow</a>
+            {% if followed %}
+                <form action="{% url 'profiles:follow' prof.pk %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="prof_pk" value="{{ prof.pk }}">
+                    <button id="unfollow" class="btn btn-danger profile_follow" type="submit">Unfollow</button>
+                </form>
             {% else %}
-                <a class="btn profile_follow" href="/profile/follow/{{ prof.pk }}">
-                    <span style="color: rgb(211, 37, 14); font-weight:600; font-size:16px;">Follow</span>
-                </a>
+                <form action="{% url 'profiles:follow' prof.pk %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="prof_pk" value="{{ prof.pk }}">
+                    <button class="btn profile_follow" type="submit">Follow</button>
+                </form>
             {% endif %}
         {% endif %}
-        
+        {{ followed }}
     </div>
     <div>
         <img class="profile-page" src="{{ prof.picture.url }}">

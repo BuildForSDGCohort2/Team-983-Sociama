@@ -12,6 +12,11 @@ RELATIONSHIP = (
     ('Widowed', 'Widowed'),
     ('In an open relationship', 'In an open relationship'),
 )
+GENDER = (
+    ('Male', 'Male'), 
+    ('Female', 'Female'), 
+    ('Others', 'Others'),
+)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
@@ -22,11 +27,10 @@ class Profile(models.Model):
     Hobbies = models.CharField(max_length=200, blank=True)
     work = models.CharField(max_length=200, blank=True)
     education = models.CharField(blank=True, max_length=40)
-    GENDER = (('Male', 'Male'), ('Female', 'Female'), ('Others', 'Others'),)
     gender = models.CharField(choices=GENDER, max_length=7, blank=True)
     relationship = models.CharField(choices=RELATIONSHIP, max_length=23, blank=True)
-    followers= models.ManyToManyField("Profile", blank=True, related_name='followerss')
-    followings = models.ManyToManyField("Profile", blank=True, related_name='followingss')
+    followers= models.ManyToManyField("Profile", blank=True, related_name='followerss') # people following profile
+    followings = models.ManyToManyField("Profile", blank=True, related_name='followingss') # people profile is following 
     about = models.TextField(default='No Bio', blank=True)
     phone = models.IntegerField(blank=True, null=True)
     cover = models.ImageField(upload_to='user/cover', default='user/happy.jpg', blank=True)
@@ -35,7 +39,10 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
-
+    
+    class Meta:
+        ordering = ('first_name', )
+    
     def get_absolute_url(self):
         return reverse('profiles:profile', kwargs={"pk": self.pk})
 

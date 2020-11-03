@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Profile, Follow
 
 class ProfileAdmin(admin.ModelAdmin):
+    # follower = len(Profile.followers)
     list_display = ('username', 'first_name', 'last_name', 'user')
     # list_filter = ('first_name',)
     fieldsets = (

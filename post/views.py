@@ -2,25 +2,34 @@ from django.shortcuts import render, get_object_or_404, reverse, redirect, HttpR
 from django.views import generic
 from .models import Post, Comment
 from django.contrib import messages
+from itertools import chain
 from django.contrib.auth import authenticate, login, logout
 from profiles.models import Profile
 
 def posts(request):
     if request.user.is_authenticated:
-        following = request.user.user_profile.get_following
         profile = request.user.user_profile
-        posts = Post.objects.all().exclude(profile=profile)
-        
-        followings_post = Post.objects.filter(profile=following)
-        
-        follow_post = Post.objects.filter(profile=request.user.user_profile)
-    
-        context = {
-            'posts': posts,
-            'following': following,
-            'follow_post': follow_post,
+        # posts = Post.objects.all().exclude(profile=profile)  
 
-            'followings_post': followings_post,
+        profile_pk = request.user.user_profile.pk
+        profiles = Profile.objects.get(pk=profile_pk)
+        following = [prof for prof in profiles.followings.all()]
+
+        posts = []
+        qs = None
+        # following posts
+        for p in following:
+            profile = p
+            p_post = profile.profile_post.all()
+            posts.append(p_post)
+        my_post = request.user.user_profile.profile_post.all()
+        posts.append(my_post)
+        # sort and chain post query
+        if len(posts)>0:
+            qs = sorted(chain(*posts), reverse=True, key=lambda obj: obj.created_at)
+        context = {
+            'posts': qs,
+            'following': following,
         }
         return render(request, 'post/posts.html', context)
     else:
@@ -59,5 +68,5 @@ def like_post(request):
     else:
         post.post_likes.add(request.user.user_profile)
         is_liked = True
-    return HttpResponseRedirect(post.get_absolute_url())
-    # return redirect('/')
+    return redirect(request.META.get('HTTP_REFERER'))
+

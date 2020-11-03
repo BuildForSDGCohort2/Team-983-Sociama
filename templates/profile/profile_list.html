@@ -4,7 +4,12 @@
 {% block body %}
     <ul style="list-style-type:none;">
         {% for profile in profiles %}   
-            <li><a href="{{ profile.get_absolute_url }}">{{ profile }}</a></li>    
+            <li style="margin-bottom:10px;">
+                <a href="{{ profile.get_absolute_url }}">
+                    <img src="{{ profile.picture.url }}" style="width:100px; height:100px"> 
+                    {{ profile }}
+                </a>
+            </li>    
         {% endfor %}
     </ul>
 
