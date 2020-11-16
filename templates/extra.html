@@ -41,3 +41,217 @@
 
 {% endif %}
  
+ 	<div>
+        <img src="{{ prof.cover.url }}" style="height:330px; width:100%;">
+
+        <div style="text-align: right; margin-top:-100px; margin-right:100px;">
+            {% if prof == request.user.user_ %}
+                {% include 'post/post_modal.html' %}
+                <a class="btn" data-toggle="modal" href="#staticBackdrop" style="background-color: rgb(0, 255, 34);">
+                    <span style="color: rgb(25, 0, 255); font-weight:650;">Post</span>
+                </a>
+            {% else %}
+                {% if followed %}
+                    <form action="{% url 's:follow' prof.pk %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="prof_pk" value="{{ prof.pk }}">
+                        <button id="unfollow" class="btn btn-danger" type="submit">Unfollow</button>
+                    </form>
+                {% else %}
+                    <form action="{% url 's:follow' prof.pk %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="prof_pk" value="{{ prof.pk }}">
+                        <button class="btn" type="submit">Follow</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <div>
+        <img class="-page" src="{{ prof.picture.url }}">
+        <h4 style="padding-left: 100px; padding-top:30px; margin-bottom:0px;">
+            {{ prof.first_name }} {{ prof.last_name }}  
+            <span style="font-size:15px;">     
+                {% if prof == request.user.user_ %}
+                    <a class="btn btn-primary" href="{% url 's:update-' request.user.user_.pk %}">
+                        <i class="fa fa-pen" style="color: orangered;"></i>
+                    </a>
+                {% endif %}
+            </span>
+        </h4>
+        <span style="padding-left: 100px;">@{{ prof.user.username }}</span>
+    </div>
+
+    <div>
+        {% include 's/tab1.html' %}
+    </div> -->
+
+
+
+
+    {% if request.user.is_authenticated %}
+        <div class="container-fluid posts">
+            <div class="row infinite-container" style="margin-left: 1px;">
+                <div class="col-sm-12 col-md-7 infinite-container">
+                    {% for post in posts %}
+                        <div class="post row infinite-item">
+                            <div class="col-md-1 col-sm-1">
+                                <a href="{% url 'profiles:profile' post.profile.pk %}">
+                                    <img class="profile-image" src="{{ post.profile.picture.url }}">
+                                </a>
+                            </div>
+                            <div class="col-md-9 col-sm-7">
+                                <div>
+                                    <b><a href="{% url 'profiles:profile' post.profile.pk %}">{{ post.profile }}</a></b>
+                                    <div style="margin-left: 10px;">posted an update {{ post.created_at|date:"d M y H:i" }}</div>
+                                </div>
+                                <a href="{% url 'post:post-detail' id=post.id %}" style="padding: 10px; height:250px; width:250px;">
+                                    <div>
+                                        <div>
+                                            <span class="link">{{ post.caption }}</span>
+                                        </div>
+                                        <br>
+                                        {% if post.images %}
+                                        <div>
+                                            <img src="{{ post.images.url }}" style="height:250px; width:250px;">
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-2 col-xs-2">
+                                        <form action="{% url 'post:like_post' %}" method="post">
+                                            {% csrf_token %}
+                                            {% if post.liked == False %}
+                                                <input type="hidden" name="post_id" value="{{ post.id }}">
+                                                <button class="btn btn-danger" type="submit" name="post_id" value="{{ post.id }}" style="color: rgb(0, 26, 255);">
+                                                    <i class="far fa-heart"></i>
+                                                    <span style="color: rgb(0, 204, 255);">{{post.likes_no}}</span>
+                                                </button>
+                                            {% else %}
+                                                <button class="btn" type="submit" name="post_id" value="{{ post.id }}" style="background-color: rgb(67, 145, 182);">
+                                                    <i class="fa fa-heart" style="color: rgb(221, 20, 20);"></i> 
+                                                    <span style="color: rgb(255, 0, 0);">{{post.likes_no}}</span>
+                                                </button>
+                                            {% endif %}
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2 col-xs-2">
+                                        <a href="{% url 'post:post-detail' id=post.id %}">
+                                            <button class="btn" style="background-color: rgb(55, 73, 5);">
+                                                <i class="fa fa-comment" style="color: rgb(7, 44, 255);"></i>
+                                                <span style="color: rgb(7, 44, 255);">{{post.comment_no }}</span>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <br>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4 rith" style="background-color: olive; right:-14px;">
+                        skospos
+                    <div class="infinite-container">
+                        {% for obj in page_obj %}
+                            <div class="infinite-item">
+                                <li>{{obj.profile}}</li>
+                                <img src="{% static 'profiles/img/profile.jpg' %}"  alt="" style="height: 120px;">
+
+                                <li>{{obj.caption}}</li>
+                                <hr>
+                            </div>
+                        {% endfor %}
+                    </div>                    
+                </div>   
+
+            </div>
+        </div>
+    {% else %}
+        {% include 'user/welcome.html' %}
+    {% endif %}
+    
+    {% if page_obj.has_next %}
+        <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">next</a>
+    {% endif %}
+    
+    <div class="d-flex justify-content-center" style="display:none;">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <script src="{% static 'profiles/jquery-ui/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'profiles/js/infinite.min.js' %}"></script>
+    <script src="{% static 'profiles/js/jquery.waypoints.min.js' %}"></script>
+    <script>
+        var infinite = new Waypoint.Infinite({
+            element: $('.infinite-container')[0],
+
+            offset: 'bottom-in-view',
+
+            onBeforePageLoad: function () {
+            
+            },
+            onAfterPageLoad: function () {
+            
+            }
+        });
+    </script>
+
+
+    <ul class="nav prof-tab" role="tablist" style="display: flex;list-style: outside none none;margin-bottom: 0;padding-right:90px;vertical-align: middle;width: 100%;">
+    <li class="nav-item" style="display: inline-block;margin-right: 0px;position: relative;">
+        <a class="active nav-link" id="follower-tab" href="#follower" title="" data-ripple="" data-toggle="tab" role="tab" aria-selected="true">Follower</a>
+    </li>
+    <li class="nav-item" style="display: inline-block;margin-right: 0px;position: relative;">
+        <a class="active nav-link" id="following-tab" href="#following" title="" data-ripple="" data-toggle="tab" role="tab" aria-selected="true">Following</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="folower" aria-labelledby="follower-tab" role="tabpanel">
+        <div >
+            {% for follower in prof.get_follower %}
+            <ul style="list-style-type:none; padding-inline-start:0px;">
+                <li>
+                    <a href="{% url 'profiles:profile' follower.pk %}">
+                        <img src="{{ follower.picture.url }}" style="height:50px; margin-right:9px;">{{ follower }}
+                    </a>
+                    
+                </li>
+            </ul>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="tab-pane fade show" id="following" aria-labelledby="following-tab" role="tabpanel">
+        <div class="container">
+            {% for following in prof.get_following %}
+                <ul style="list-style-type:none; padding-inline-start:0px;">
+                    <li>
+                        <a href="{% url 'profiles:profile' following.pk %}">
+                            <img src="{{ following.picture.url }}" style="height:50px; margin-right:9px;">{{ following }}
+                        </a>
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+.search-txt {
+    border: none;
+    background: none;
+    outline: none;
+    float: left;
+    padding: 0;
+    color: white;
+    background-color: #2f3640;
+    font-size: 16px;
+    transition: 0.4s;
+    line-height: 40px;
+    width: 200px;
+    font-weight: bold;
+}

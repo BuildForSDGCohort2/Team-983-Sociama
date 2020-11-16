@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 from django.shortcuts import reverse, get_object_or_404
+import datetime
 
 RELATIONSHIP = (
     ('Single', 'Single'), 
@@ -39,6 +40,10 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def get_age(self):
+        today = datetime.date.today()
+        return today.year - self.age.year - ((today.month, today.day) < (self.age.month, self.age.day))
     
     class Meta:
         ordering = ('first_name', )

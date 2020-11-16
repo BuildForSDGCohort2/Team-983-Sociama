@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
+import datetime
 from django.views import generic
 from .forms import UpdateUserForm, FollowForm
 from post.forms import PostForm, CommentForm
@@ -8,7 +9,7 @@ from post.models import Post
 
 class ProfileView(generic.DetailView):
     model = Profile
-    template_name = 'profile/profile.html'
+    template_name = 'profiles/profile.html'
     context_object_name = 'prof'
 
     def get_context_data(self, **kwargs):
@@ -25,30 +26,39 @@ class ProfileView(generic.DetailView):
         else:
             follow = False
         context['followed'] = follow
+
+        # p_form = PostForm()
+        # if self.request.method == 'POST':
+        #     p_form = PostForm(self.request.POST, request.FILES)   
+        #     profile = Profile.objects.get(pk=self.request.user.user_profile.pk)
+
+        #     if p_form.is_valid():
+        #         instance = p_form.save(commit=False)
+        #         instance.profile = profile
+        #         instance.save()
+        #         p_form = PostForm()
+        #         # return redirect(profile.get_absolute_url())
+        # context['p_form'] = p_form        
         return context
 
 def create_post(request):
-    form = PostForm()
-
+    p_form = PostForm()
     if request.method == 'POST':
-        print('Printing POST:', request.POST)
-        form = PostForm(request.POST, request.FILES)   
+        p_form = PostForm(request.POST, request.FILES)   
         profile = Profile.objects.get(pk=request.user.user_profile.pk)
 
-        if form.is_valid():
-            instance = form.save(commit=False)
+        if p_form.is_valid():
+            instance = p_form.save(commit=False)
             instance.profile = profile
             instance.save()
-            form = PostForm()
-
+            p_form = PostForm()
             return redirect(profile.get_absolute_url())
-
-    context = {'form': form}
-    return render(request, 'post/post_modal.html', context)
+    context = {'p_form': p_form,}
+    return render(request, 'post/create_post.html', context)
 
 class ProfileList(generic.ListView):
     model = Profile
-    template_name = 'profile/profile_list.html'
+    template_name = 'profiles/profile_list.html'
     context_object_name = 'profiles'
 
     def get_queryset(self):
@@ -59,13 +69,13 @@ def updateprofile(request, pk):
     form = UpdateUserForm(instance=profile)
 
     if request.method == 'POST':
-        form = UpdateUserForm(request.POST, instance=profile)
+        form = UpdateUserForm(request.POST or None, request.FILES or None, instance=profile)
         if form.is_valid():
             form.save()
             return redirect(profile.get_absolute_url())
 
     context = {'form': form}
-    return render(request, 'profile/update.html', context)
+    return render(request, 'profiles/update.html', context)
 
 # def follow(request, pk):
 #     profile = get_object_or_404(Profile, pk=pk)

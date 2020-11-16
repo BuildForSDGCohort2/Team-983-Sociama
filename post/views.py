@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404, reverse, redirect, HttpResponseRedirect
 from django.views import generic
-from .models import Post, Comment
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from itertools import chain
 from .forms import CommentForm
 from django.contrib.auth import authenticate, login, logout
 from profiles.models import Profile
+from .models import Post, Comment, Message
 
 def posts(request):
     if request.user.is_authenticated:
@@ -28,8 +29,13 @@ def posts(request):
         # sort and chain post query
         if len(posts)>0:
             qs = sorted(chain(*posts), reverse=True, key=lambda obj: obj.created_at)
+
+        paginator = Paginator(qs, 20)
+        page_num = request.GET.get('page')
+        post = paginator.get_page(page_num)
+        
         context = {
-            'posts': qs,
+            'posts': post,
             'following': following,
         }
         return render(request, 'post/posts.html', context)

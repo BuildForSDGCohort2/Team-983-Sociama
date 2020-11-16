@@ -1,0 +1,33 @@
+<div class="conatiner" style="min-height: 600px;">
+    <div class="d-flex">
+        <ul class="nav prof-tab" role="tablist">
+            <li class="nav-item">
+                <a class="active nav-link" id="follower-tab" href="#follower" data-toggle="tab"
+                    role="tab" aria-selected="false">Follower</a>
+            </li>
+            <li class="nav-item">
+                <a class="active nav-link" id="following-tab" href="#following" data-toggle="tab" role="tab"
+                    aria-selected="false">Following</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="follower" aria-labelledby="follower-tab" role="tabpanel">
+
+
+    </div>
+    <div class="tab-pane fade" id="following" aria-labelledby="following-tab" role="tabpanel">
+        <div class="container">
+            {% for following in prof.get_following %}
+            <ul style="list-style-type:none; padding-inline-start:0px;">
+                <li>
+                    <a href="{% url 'profiles:profile' following.pk %}">
+                        <img src="{{ following.picture.url }}" style="height:50px; margin-right:9px;">{{ following }}
+                    </a>
+                </li>
+            </ul>
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block title %} - Login{% endblock title %}
 {% block body %}
 <div style="background-color: rgb(20, 39, 68); height:561px;">
     <div>
         <form action="" method="post" style="text-align: center;  padding-top:110px;">
             {% csrf_token %}
-            <img src="{% static 'profiles/img/logo.png' %}" style="height: 100px; margin-bottom:40px;text-align: center;">
+            <img src="{% static 'img/logo.png' %}" style="height: 100px; margin-bottom:40px;text-align: center;">
+            
+            {% for message in messages %}
+                <h5 style="font-style: oblique; font-weight: bold; color: rgb(214, 236, 16);">{{message}}</h5>
+            {% endfor %}
             
             <div data-validate="Enter email" style="margin-bottom: 20px; text-align: center;">
                 <input type="email" name="email" placeholder="Email" style="height: 40px; width:440px; padding:0px 15px;">

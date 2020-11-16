@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} - Update {% endblock title %}
+
+{% block body %}
+    <div class="container">
+        <h5 class="f-title"><i class="fa fa-info"></i> Edit Profile Informations</h5>
+        {{form.errors}}
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="p-3">
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        {{form.first_name}}
+                    </div>
+                    <div class="col-md-6">
+                        {{form.last_name}}
+					</div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        {{form.about}}
+                    </div>
+                    <div class="col-md-6 radio">
+                        <ul style="list-style: none; display:flex; padding-left:10px; margin-top:1rem;">
+                            {% for gender in form.gender %}
+                                <li style="margin-left: 3px; margin-right: 3px;">
+                                    {{gender}}
+                                </li>
+                            {% endfor %}
+                        </ul>    
+                    </div>
+                    <div class="col-md-12">
+                        {{form.age}}
+                    </div>
+                    <div class="col-md-12 radio">
+                        <ul style="list-style: none; display:flex; padding-left:10px; margin-top:1rem;">
+                            {% for relationship in form.relationship %}
+                            <li style="margin-left: 3px; margin-right: 3px;">
+                                {{relationship}}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        {{form.cover}}
+                    </div>
+                    <div class="col-md-6">
+                        {{form.picture}}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        {{form.country}}
+                    </div>
+                    <div class="col-md-6">
+                        {{form.phone}}
+                    </div>
+                </div>
+                <div class="mt-5 text-center">
+                    <!-- <button class="btn btn-primary profile-button" type="submit">Save Profile</button> -->
+                    <input class="btn btn-primary" type="submit" value="Save Profile">
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

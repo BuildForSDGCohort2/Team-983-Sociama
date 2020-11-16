@@ -1,38 +1,39 @@
 {% load static %}
-<nav class="navbar navbar-expand-md navbar-dark bg-dark" style="padding: 0px 100px;">
+<nav class="navbar navbar-expand-sm navbar-dark mb-1">
 	<a class="navbar-brand" href="{% url 'post:posts' %}">
-		<img src="{% static 'profiles/img/nav.png' %}" alt="" style="height:30px;">
-		Home </a>
+		<img src="{% static 'img/nav.png' %}" alt="" style="height: 40px; border-radius: 50%;">
+	</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
- 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
-		<ul class="navbar-nav mr-auto">
-			<!-- <li class="nav-item">
-				<a href="#" class="dropdown-item">{{ request.user.user_profile }}</a>
-			</li> -->
+ 	<div class="collapse navbar-collapse icon-nav" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto ">
 			<li class="nav-item pr-2 pl-2 pt-1">
-				<a href="#"><i class="fa fa-bell mr-1" style="font-size: 19px;"></i> Notifications</a>
+				<a href="#"> 
+					<i class="fas fa-bell mr-1" style="font-size: 25px; color:rgb(255, 255, 255);"></i>
+				 </a>
 			</li>
 			<li class="nav-item pr-2 pl-2 pt-1">
-				<a href="#"><i class="fas fa-envelope" style="font-size: 19px;"></i> Messages <span class="badge">19</span></a>
+				<a href="#">
+					<i class="fas fa-envelope mr-1" style="font-size: 25px; color:rgb(255, 255, 255);"></i>
+				</a>
 			</li>
-			<a href={% url 'profiles:profile-list' %}>Suggested Profile</a>
+			<!-- <a href="{% url 'profiles:profile-list' %}">Suggested Profile</a> -->
 		</ul>
-		<ul class="navbar-nav ml-auto">
+		<ul class="navbar-nav ml-auto icon-nav">
 			<li class="nav-item">
-				<form class="form-inline my-2">
-					<input class="form-control mr-sm-2" type="search" placeholder="Search Sociama ..." aria-label="Search">
-					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				<form class="" action="" method="post">
+					<input class="search-box" type="text" name="" placeholder="Search Sociama ...">
 				</form>
-				<!-- <i class="fa fa-search"></i> -->
+			
 			</li>
-		
 			<li class="nav-item dropdown">
 				{% if user.is_authenticated %}
-					<img class="nav-link profile-image dropdown" data-toggle="dropdown" data-target="profile" src="{{request.user.user_profile.picture.url }}" aria-expanded="true">
+					<div style="display: inline-flex;">
+						<img class="nav-link profile-image dropdown" data-toggle="dropdown" data-target="profile" src="{{request.user.user_profile.picture.url }}" aria-expanded="true">
+					</div>
 				{% else %}
-					<img class="nav-link profile-image dropdown" data-toggle="dropdown" data-target="profile" src="{% static 'profiles/img/profile.jpg' %}" aria-expanded="true">
+					<img class="nav-link profile-image dropdown" data-toggle="dropdown" data-target="profile" src="{% static 'img/profile.jpg' %}" aria-expanded="true">
 				{% endif %}
 				
 				<div class="dropdown-menu" aria-labelledby="profile" style="left: -60px;">
@@ -45,10 +46,6 @@
                         <a href="{% url 'users:register' %}" class="dropdown-item">Register</a>
                         <a href="{% url 'users:login' %}" class="dropdown-item">Login</a>
 					{% endif %}
-
-					<div class="dropdown-divider"></div>
-					<a href="" class="dropdown-item">Settings</a>
-
 				</div>
 			</li>
 		</ul>

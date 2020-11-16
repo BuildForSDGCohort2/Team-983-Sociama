@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} - Suggested Profiles {% endblock title %}
+
+{% block body %}
+    <ul style="list-style-type:none;">
+        {% for profile in profiles %}   
+            <li style="margin-bottom:10px;">
+                <a href="{{ profile.get_absolute_url }}">
+                    <img src="{{ profile.picture.url }}" style="width:100px; height:100px"> 
+                    {{ profile }}
+                </a>
+            </li>    
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}

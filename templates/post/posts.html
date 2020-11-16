@@ -1,56 +1,52 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block body %}
+{% block title %} - Post Feed {% endblock title %}
 
-{% if request.user.is_authenticated %}
-    <div class="container-fluid" style="min-height: 458px; margin-top:4px;">
-        <div class="row" style="margin-left: 1px;">
-            <div class="col-md-7">
-                {% for post in posts %}
-                    <div class="post row">
-                        <div class="col-md-1">
+{% block body %}
+    {% if request.user.is_authenticated %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-2">
+
+                </div>
+                <div class="col-lg-8 infinite-container">
+                    {% for post in posts %}
+                        <div class="post infinite-item">
+                            <img class="post_profile_pic" src="{{ post.profile.picture.url }}" />
                             <a href="{% url 'profiles:profile' post.profile.pk %}">
-                                <img class="profile-image" src="{{ post.profile.picture.url }}">
+                                <span style="font-size: 16px; font-weight:600; font-family: monospace;">{{ post.profile }}</span>
                             </a>
-                        </div>
-                        <div class="col-md-9">
+                            <font style="display: block;">{{ post.created_at|date:"d M y H:i" }}</font>
+                            <hr style="background: rgb(62, 76, 156); height: 1px; border: none; margin: 20px 0 10px 0;">
+                            
+                            <span class="link" style="margin: 10px 0 0 15px;">{{ post.caption }}</span>
+                            {% if post.images %}
                             <div>
-                                <b><a href="{% url 'profiles:profile' post.profile.pk %}">{{ post.profile }}</a></b>
-                                <div style="margin-left: 10px;">posted an update {{ post.created_at|date:"d M y H:i" }}</div>
+                                <img src="{{ post.images.url }}" style="width: 500px; margin: 10px 0 0 20px; max-height: 800px;">
                             </div>
-                            <a href="{% url 'post:post-detail' id=post.id %}" style="padding: 10px; height:250px; width:250px;">
-                                <div>
-                                    <div>
-                                        <span class="link">{{ post.caption }}</span>
-                                    </div>
-                                    <br>
-                                    {% if post.images %}
-                                    <div>
-                                        <img src="{{ post.images.url }}" style="height:250px; width:250px;">
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </a>
+                            {% endif %}
                             <hr>
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-xs-2">
                                     <form action="{% url 'post:like_post' %}" method="post">
                                         {% csrf_token %}
                                         {% if post.liked == False %}
-                                            <input type="hidden" name="post_id" value="{{ post.id }}">
-                                            <button class="btn btn-danger" type="submit" name="post_id" value="{{ post.id }}" style="color: rgb(0, 26, 255);">
-                                                <i class="far fa-heart"></i>
-                                                <span style="color: rgb(0, 204, 255);">{{post.likes_no}}</span>
-                                            </button>
+                                        <input type="hidden" name="post_id" value="{{ post.id }}">
+                                        <button class="btn btn-danger" type="submit" name="post_id" value="{{ post.id }}"
+                                            style="color: rgb(0, 26, 255);">
+                                            <i class="far fa-heart"></i>
+                                            <span style="color: rgb(0, 204, 255);">{{post.likes_no}}</span>
+                                        </button>
                                         {% else %}
-                                            <button class="btn" type="submit" name="post_id" value="{{ post.id }}" style="background-color: rgb(67, 145, 182);">
-                                                <i class="fa fa-heart" style="color: rgb(221, 20, 20);"></i> 
-                                                <span style="color: rgb(255, 0, 0);">{{post.likes_no}}</span>
-                                            </button>
+                                        <button class="btn" type="submit" name="post_id" value="{{ post.id }}"
+                                            style="background-color: rgb(67, 145, 182);">
+                                            <i class="fa fa-heart" style="color: rgb(221, 20, 20);"></i>
+                                            <span style="color: rgb(255, 0, 0);">{{post.likes_no}}</span>
+                                        </button>
                                         {% endif %}
                                     </form>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-xs-2">
                                     <a href="{% url 'post:post-detail' id=post.id %}">
                                         <button class="btn" style="background-color: rgb(55, 73, 5);">
                                             <i class="fa fa-comment" style="color: rgb(7, 44, 255);"></i>
@@ -59,19 +55,41 @@
                                     </a>
                                 </div>
                             </div>
-                            
-                            <br>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="col-md-4" style="background-color: olive; right:-14px ">
-                    
-            </div>
-        </div>
-    </div>
-{% else %}
-    {% include 'user/welcome.html' %}
-{% endif %}
+                    {% endfor %}
+                </div>
 
+                <div class="col-lg-2 post">
+                    <aside class="sidebar static">
+                        <div class="widget">
+                        <div class="widget stick-widget">
+                            <h4 class="follower-title">Who's follownig</h4>
+                            {% for following in request.user.user_profile.get_following %}
+                            <ul style="list-style: none; max-height: 260px; position: relative; padding-left:0px">
+                                <li>
+                                    <figure style="display: inline-block; margin-bottom: 0; max-width: 45px; min-width: 45px; vertical-align: middle; width: 45px;">
+                                        <img src="{{ following.picture.url }}" alt="" style="border-radius:100%; height: 50px;">
+                                    </figure>
+                                    <div style="display: inline-block; padding-left: 8px; vertical-align: middle;">
+                                        <h4 style="display: inline-block; font-size: 16px;"><a href="#" title="">{{ following }}</a></h4>
+                                    </div>
+                                </li>
+                            </ul>
+                            {% endfor %}
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>                
+        {% if posts.has_next %}
+            <a class="infinite-more-link" href="?page={{ posts.next_page_number }}">next</a>
+        {% endif %}  
+
+        <div class="loading" >
+            Loading...
+        </div>
+
+    {% else %}
+        {% include 'user/welcome.html' %}
+    {% endif %}
 {% endblock body %}

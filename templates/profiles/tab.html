@@ -1,0 +1,63 @@
+<div class="">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top: 20px; margin-left:100px;">
+        <li class="nav-item item">
+            <a class="nav-link" id="pills-timeline-tab" data-toggle="pill" href="#pills-timeline" role="tab"
+                aria-controls="pills-home" aria-selected="true">Timeline</a>
+        </li>
+        <li class="nav-item item">
+            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
+                aria-controls="pills-profile" aria-selected="false">About</a>
+        </li>
+        <li class="nav-item item">
+            <a class="nav-link" id="pills-follower-tab" data-toggle="pill" href="#pills-follower" role="tab"
+                aria-controls="pills-follower" aria-selected="false">Follower: {{ prof.get_follower_no }}</a>
+        </li>
+        <li class="nav-item item">
+            <a class="nav-link" id="pills-following-tab" data-toggle="pill" href="#pills-following" role="tab"
+                aria-controls="pills-following" aria-selected="false">Following: {{ prof.get_followering_no }}</a>
+        </li>
+        <li class="nav-item item ml-auto">
+            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+                aria-controls="pills-contact" aria-selected="false"> <i class="fas fa-users-cog"></i> Settings</a>
+        </li>
+    </ul>
+</div>
+<!-- -----------------------------==================================================-----==========================---- -->
+<div class="container-fluid" style="padding-top: 30px; background-color:rgb(240, 236, 236);">
+    <div class="tab-content" id="pills-tabContent" style="margin-top: 30px;">
+        <div class="tab-pane fade show active" id="pills-timeline" role="tabpanel" aria-labelledby="pills-timeline-tab">
+            {% include 'profiles/timeline.html' %}
+        </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            {% include 'profiles/about.html' %}
+        </div>
+        <div class="tab-pane fade" id="pills-follower" role="tabpanel" aria-labelledby="pills-follower-tab">
+            <div class="container">
+                {% for follower in prof.get_follower %}
+                <ul style="list-style-type:none; padding-inline-start:0px;">
+                    <li>
+                        <a href="{% url 'profiles:profile' follower.pk %}">
+                            <img src="{{ follower.picture.url }}" style="height:50px; margin-right:9px;">{{ follower }}
+                        </a>
+                        
+                    </li>
+                </ul>
+                {% endfor %}
+            </div>    
+        </div>
+        <div class="tab-pane fade" id="pills-following" role="tabpanel" aria-labelledby="pills-following-tab">
+            <div class="container">
+                {% for following in prof.get_following %}
+                    <ul style="list-style-type:none; padding-inline-start:0px;">
+                        <li>
+                            <a href="{% url 'profiles:profile' following.pk %}">
+                                <img src="{{ following.picture.url }}" style="height:50px; margin-right:9px;">{{ following }}
+                            </a>
+                        </li>
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+    </div>
+</div>

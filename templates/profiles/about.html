@@ -1,0 +1,57 @@
+<div class="row" style="margin-right: 0px;">
+    <div class="col-md-3">
+
+    </div>
+
+    <div class="col-lg-6">
+        <div class="central-meta">
+            <div class="about">
+                <div class="personal">
+                    <h5 class="f-title"><i class="ti-info-alt"></i> Personal Info</h5>
+                    <p>
+                        {{prof.about}}
+                    </p>
+                </div>
+                <div class="d-flex flex-row mt-2">
+                    <ul class="nav nav-tabs nav-tabs--vertical nav-tabs--left" >
+                        <li class="nav-item">
+                            <a href="#basic" class="nav-link active" data-toggle="tab" >Basic info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#Others" class="nav-link" data-toggle="tab" >Others</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" style="background: #eff5dc none repeat scroll 0 0; width:100%;">
+                        <div class="tab-pane fade show active" id="basic" >
+                            <ul class="basics" style="list-style: none; padding-left: 30px; padding-top: 20px;">
+                                <li class="about-item"><i class="fa fa-user mr-3"></i>{{prof}}</li>
+                                <li class="about-item"><i class="fas fa-calendar-plus mr-3"></i>{{prof.get_age}}</li>
+
+                                {% if prof.gender == Male %}
+                                    <li class="about-item"><i class="fas fa-male mr-3"></i>{{prof.gender}}</li>
+                                {% elif prof.gender == Female %}
+                                    <li class="about-item"><i class="fas fa-female mr-3"></i>{{prof.gender}}</li>
+                                {% else %}
+                                    <li class="about-item"><i class="fab fa-magento mr-3"></i>{{prof.gender}}</li>
+                                {% endif %}
+                                <li class="about-item"><i class="fa fa-user mr-3"></i>{{prof.relationship}}</li>
+
+                                <li class="about-item"><i class="fas fa-street-view mr-3"></i>Lives in {{prof.country}}</li>
+                                <li class="about-item"><i class="fa fa-mobile-alt mr-3"></i>{{prof.phone}}</li>
+                                <li class="about-item"><i class="fas fa-envelope-open-text  mr-3"></i>{{prof.user}}</li>
+                            </ul>
+                        </div>
+                        <div class="tab-pane fade" id="Others" role="tabpanel">
+                            <ul class="basics" style="list-style: none; padding-left: 30px; padding-top: 20px;">
+                                <li class="about-item"><i class="fa fa-user mr-3"></i>{{prof.Hobbies}}</li>
+                                <li class="about-item"><i class="fa fa-user mr-3"></i>{{prof.work}}</li>
+                                <li class="about-item"><i class="fa fa-user mr-3"></i>{{prof.education}}</li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>	
+    </div>
+</div>
